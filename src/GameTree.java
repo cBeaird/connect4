@@ -56,6 +56,13 @@ public class GameTree {
 		return utl;
 	}
 
+	
+	
+	@Override
+	public String toString() {
+		return "GameTree [u("+board.getCurrentPlayer()+", "+board.getLastMove()+")="+utility(board.getCurrentPlayer())+"]";
+	}
+
 	void print(String indent) {
 		System.out.println(indent + board + " ux " + utility('X') + " uo " + utility('O'));
 		for (GameTree child : children) {

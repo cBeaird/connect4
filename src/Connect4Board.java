@@ -4,24 +4,30 @@ import static java.util.Arrays.copyOf;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Scanner;
 
 public class Connect4Board {
+	private static final int RUN_LENGTH = 4;
 	private static final char PLAYER1 = 'X';
 	private static final char PLAYER2 = 'O';
-	private static final char OPEN = ' ';
+	static final char OPEN = ' ';
 
 	private static final int BOARD_WIDTH = 5;
 	private static final int BOARD_HEIGHT = 4;
 
 //	private char[] rowMajorState;
-	private char[][] state;
+
+
+	char[][] state;
 
 	private int boardWidth = BOARD_WIDTH;
 	private int boardHeight = BOARD_HEIGHT;
 
 	private char currentPlayer = PLAYER1;
+	
+	private Move lastMove;
 
-	public static Connect4Board parse(String boardString) {
+	private static Connect4Board parse(String boardString) {
 		String[] lines = boardString.split("\\r\\n?|\\n");
 		int boardHeight = lines.length;
 
@@ -51,6 +57,35 @@ public class Connect4Board {
 		return board;
 	}
 
+	public Connect4Board(String boardString) {
+		String[] lines = boardString.split("\\r\\n?|\\n");
+		boardHeight = lines.length;
+		boardWidth = lines[0].substring(1, lines[0].length() - 1).split("\\|").length;
+		
+		state =  new char[boardHeight][boardWidth];
+		
+		int player1Moves = 0;
+		int player2Moves = 0;
+
+		for (int i = 0; i < boardHeight; i++) {
+			String[] line = lines[i].substring(1, lines[0].length() - 1).split("\\|");
+			for (int j = 0; j < boardWidth; j++) {
+				if (line[j].charAt(0) == PLAYER1) {
+					player1Moves++;
+				}
+				if (line[j].charAt(0) == PLAYER2) {
+					player2Moves++;
+				}
+				state[i][j] = line[j].charAt(0);
+			}
+		}
+		if (player1Moves > player2Moves) {
+			currentPlayer = PLAYER2;
+		} else {
+			currentPlayer = PLAYER1;
+		}
+	}
+	
 	public Connect4Board() {
 		this(BOARD_HEIGHT, BOARD_WIDTH);
 	}
@@ -68,6 +103,7 @@ public class Connect4Board {
 		for(int i =0; i < board.state.length; i++){
 			state[i] = copyOf(board.state[i], board.state[i].length);
 		}
+		this.currentPlayer = board.currentPlayer;
 //		this.rowMajorState = copyOf(board.rowMajorState, board.rowMajorState.length);
 	}
 
@@ -96,6 +132,8 @@ public class Connect4Board {
 		state[row][col] = player;
 //		set(row, col, player);
 		currentPlayer = currentPlayer == PLAYER2 ? PLAYER1 : PLAYER2;
+		
+		setLastMove(new Move(row, col));
 	}
 
 	private int rowMajIdx(int row, int col) {
@@ -145,7 +183,7 @@ public class Connect4Board {
 //						System.out.println("Streak of " + len);
 					}
 				}
-				if (len == 4) {
+				if (len == RUN_LENGTH) {
 					return prev;
 				}
 
@@ -156,7 +194,7 @@ public class Connect4Board {
 		return OPEN;
 	}
 
-	private char getColumnWinner() {
+	char getColumnWinner(char[][] state) {
 
 		char prev = OPEN;
 		int len = 0;
@@ -166,7 +204,7 @@ public class Connect4Board {
 			prev = OPEN;
 			for (int row = 0; row < boardHeight; row++) {
 
-//				System.out.println("[" + row + "][" + col + "] is '" + state[row][col] + "'");
+			System.out.println("[" + row + "][" + col + "] is '" + state[row][col] + "'");
 
 				if (state[row][col] == OPEN) {
 					len = 0;
@@ -177,18 +215,18 @@ public class Connect4Board {
 				if (prev == OPEN) {
 					if (state[row][col] != OPEN) {
 						len++;
-//						System.out.println("Streak of " + len);
+						System.out.println("Streak of " + len);
 					}
 				} else {
 					if (prev == state[row][col] && prev != OPEN) {
 						len++;
-//						System.out.println("Streak of " + len);
+						System.out.println("Streak of " + len);
 					} else {
 						len = 1;
-//						System.out.println("Streak of " + len);
+						System.out.println("Streak of " + len);
 					}
 				}
-				if (len == 4) {
+				if (len == RUN_LENGTH) {
 					return prev;
 				}
 
@@ -201,7 +239,7 @@ public class Connect4Board {
 	}
 	
 	
-	private char getDiagonalWinner() {
+	protected char getDiagonalWinner() {
 		char prev = OPEN;
 		int len = 0;
 		
@@ -245,7 +283,7 @@ public class Connect4Board {
 //						System.out.println("Streak of " + len);
 					}
 				}
-				if (len == 4) {
+				if (len == RUN_LENGTH) {
 					return prev;
 				}
 
@@ -295,7 +333,7 @@ public class Connect4Board {
 //						System.out.println("Streak of " + len);
 					}
 				}
-				if (len == 4) {
+				if (len == RUN_LENGTH) {
 					return prev;
 				}
 
@@ -313,7 +351,7 @@ public class Connect4Board {
 		if (winner != OPEN) {
 			return winner;
 		}
-		winner = getColumnWinner();
+		winner = getColumnWinner(state);
 		if (winner != OPEN) {
 			return winner;
 		}
@@ -459,12 +497,13 @@ public class Connect4Board {
 	
 	
 	public static void main(String[] args) throws IllegalMoveException {
-
+		
+		Scanner scn =  new Scanner(System.in);
 
 		 Connect4Board board= Connect4Board.parse("" +
-		 "| | | | | |\r\n" +
-		 "| | | | | |\r\n" +
-		 "| | | | | |\r\n" +
+		 "| | | | |O|\r\n" +
+		 "| | | | |X|\r\n" +
+		 "| | | | |O|\r\n" +
 		 "|X|O|X|O|X|");
 
 		 
@@ -501,6 +540,14 @@ public class Connect4Board {
 //		 }
 		 
 		 
+	}
+
+	public Move getLastMove() {
+		return lastMove;
+	}
+
+	public void setLastMove(Move lastMove) {
+		this.lastMove = lastMove;
 	}
 
 }
