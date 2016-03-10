@@ -1,8 +1,6 @@
-
 import static java.util.Arrays.copyOf;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Connect4Board {
@@ -307,6 +305,61 @@ public class Connect4Board {
         return OPEN;
     }
 
+    private char getWinnerInOne(int k) {
+        for (int i = 0; i < boardWidth; i++) {
+            for (int j = 0; j < boardHeight; j++) {
+                // Open cell cannot start a win in any direction
+                if (state[i][j] == OPEN)
+                    break;
+
+                // Find row winner if exists
+                if ((i + k) < boardWidth) {
+                    for (int l = i + 1; l < k; l++) {
+                        if (state[i][j] != state[l][j])
+                            break;
+                        if (i + l == k)
+                            return state[i][j];
+                    }
+                }
+
+                // Find Column winner if exists
+                if ((j + k) < boardHeight) {
+                    for (int l = j + 1; l < boardHeight; l++) {
+                        if (state[i][j] != state[i][l])
+                            break;
+                        if (j + l == k)
+                            return state[i][j];
+                    }
+                }
+
+                // Find Diagonal winner if exists
+                // look for (upRight vector wins)
+                if (((i + k) < boardWidth) && ((j + k) < boardHeight)) {
+                    for (int ur = 1; ur < k; ur++) {
+                        if (((i + ur) > boardWidth) || ((j + ur) > boardHeight))
+                            break;
+                        if (state[i][j] != state[i + ur][j + ur])
+                            break;
+                        if (i + ur == k)
+                            return state[i][j];
+                    }
+                }
+                // look for (upLeft vector wins)
+                if (((i - k) > 0) && ((j + k) < boardHeight)) {
+                    for (int ul = 1; ul < k; ul++) {
+                        if (((i + (-1 * ul)) < 0) || ((j + ul) > boardHeight))
+                            break;
+                        if (state[i][j] != state[i + (-1 * ul)][j + ul])
+                            break;
+                        if (j + ul == k)
+                            return state[i][j];
+                    }
+                }
+            }
+        }
+        return OPEN;
+    }
+
     public char getWinner() {
         char winner = OPEN;
         winner = getRowWinner();
@@ -393,6 +446,7 @@ public class Connect4Board {
         }
         System.out.println(sb.toString());
     }
+
 
     @Override
     public String toString() {
