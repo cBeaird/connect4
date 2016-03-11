@@ -67,19 +67,17 @@ public class NaiveConnect4Game {
 		GameTree winner = null;
 		int maxUtl = Integer.MIN_VALUE;
 		for (GameTree child : gt.children) {
-			System.out.println(child);
 			if (child.board.hasWinner() && child.board.getWinner() == 'X') {
 				winner = child;
 				break;
 			}
 			int utl = child.utility(board.getCurrentPlayer());
-			System.out.println("child.utility("+board.getCurrentPlayer()+")="+ utl);
 			if (maxUtl < utl) {
 				winner = child;
 				maxUtl = utl;
 			}
 		}
-		System.out.println("winner: " + winner);
+
 		Connect4Board newBoard = new Connect4Board(board);
 		newBoard.move(winner.board.getLastMove());
 		System.out.println("The computer makes move " + winner.board.getLastMove());

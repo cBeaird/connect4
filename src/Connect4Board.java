@@ -2,9 +2,7 @@
 import static java.util.Arrays.copyOf;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Scanner;
 
 public class Connect4Board {
 	private static final int RUN_LENGTH = 4;
@@ -14,8 +12,6 @@ public class Connect4Board {
 
 	private static final int BOARD_WIDTH = 5;
 	private static final int BOARD_HEIGHT = 4;
-
-	// private char[] rowMajorState;
 
 	char[][] state;
 
@@ -46,7 +42,6 @@ public class Connect4Board {
 				if (line[j].charAt(0) == PLAYER2) {
 					player2Moves++;
 				}
-				// board.set(i, j, line[j].charAt(0));
 				board.state[i][j] = line[j].charAt(0);
 			}
 		}
@@ -93,8 +88,6 @@ public class Connect4Board {
 		this.boardHeight = boardHeight;
 		this.boardWidth = boardWidth;
 		this.state = new char[boardHeight][boardWidth];
-		// rowMajorState = new char[boardHeight * boardWidth];
-		// fill(rowMajorState, ' ');
 	}
 
 	public Connect4Board(Connect4Board board) {
@@ -103,8 +96,6 @@ public class Connect4Board {
 			state[i] = copyOf(board.state[i], board.state[i].length);
 		}
 		this.currentPlayer = board.currentPlayer;
-		// this.rowMajorState = copyOf(board.rowMajorState,
-		// board.rowMajorState.length);
 	}
 
 	public void move(Move move) throws IllegalMoveException {
@@ -136,17 +127,6 @@ public class Connect4Board {
 		setLastMove(new Move(row, col));
 	}
 
-	private int rowMajIdx(int row, int col) {
-		return (boardWidth * row) + col;
-	}
-	//
-	// private char get(int row, int col) {
-	// return rowMajorState[rowMajIdx(row, col)];
-	// }
-	//
-	// private void set(int row, int col, char val) {
-	// rowMajorState[rowMajIdx(row, col)] = val;
-	// }
 
 	public char getCurrentPlayer() {
 		return currentPlayer;
@@ -199,8 +179,6 @@ public class Connect4Board {
 			prev = OPEN;
 			for (int row = 0; row < boardHeight; row++) {
 
-				System.out.println("[" + row + "][" + col + "] is '" + state[row][col] + "'");
-
 				if (state[row][col] == OPEN) {
 					len = 0;
 					prev = OPEN;
@@ -210,15 +188,12 @@ public class Connect4Board {
 				if (prev == OPEN) {
 					if (state[row][col] != OPEN) {
 						len++;
-						System.out.println("Streak of " + len);
 					}
 				} else {
 					if (prev == state[row][col] && prev != OPEN) {
 						len++;
-						System.out.println("Streak of " + len);
 					} else {
 						len = 1;
-						System.out.println("Streak of " + len);
 					}
 				}
 				if (len == RUN_LENGTH) {
@@ -402,24 +377,6 @@ public class Connect4Board {
 		return getRemainingMoves().isEmpty();
 	}
 
-	// legal moves are encoded as row major indices so that List.contains can be
-	// use to check if a move is legal (see move()).
-	// public List<Integer> getRemainingMoves() {
-	// List<Integer> legalMoves = new ArrayList<>();
-	// for(int i = 1; i < boardHeight; i++){
-	// for(int j = 0; j < boardWidth; j++){
-	// if(state[i][j] != OPEN){
-	// if(state[i-1][j] == OPEN){
-	// legalMoves.add(rowMajIdx(i - 1, j));
-	// }
-	// }
-	// if(state[i][j] == OPEN && i == boardHeight - 1){
-	// legalMoves.add(rowMajIdx(i, j));
-	// }
-	// }
-	// }
-	// return legalMoves;
-	// }
 
 	public List<Move> getRemainingMoves() {
 		List<Move> legalMoves = new ArrayList<>();
@@ -529,44 +486,6 @@ public class Connect4Board {
 		public String toString() {
 			return "Move [row=" + row + ", col=" + col + "]";
 		}
-
-	}
-
-	public static void main(String[] args) throws IllegalMoveException {
-
-		Scanner scn = new Scanner(System.in);
-
-		Connect4Board board = Connect4Board
-				.parse("" + "| | | | |O|\r\n" + "| | | | |X|\r\n" + "| | | | |O|\r\n" + "|X|O|X|O|X|");
-
-		GameTree gt = new GameTree(board);
-
-		// gt.print(" ");
-
-		System.out.println(board);
-
-		for (GameTree child : gt.children) {
-			System.out.println("up1 = " + child.utility(PLAYER1));
-			System.out.println("up2 = " + child.utility(PLAYER2));
-		}
-
-		// while(!board.hasWinner() && !board.isFilled()){
-		// List<Move> moves = board.getRemainingMoves();
-		// System.out.println(board);
-		// System.out.println(moves);
-		// Collections.shuffle(moves);
-		// board.move(moves.get(0));
-		// }
-		//
-		// System.out.println(board);
-		// System.out.println(board.getRemainingMoves());
-		//
-		//
-		// if(board.hasWinner()){
-		// System.out.println(board.getWinner() + " wins");
-		// } else {
-		// System.out.println("draw");
-		// }
 
 	}
 
