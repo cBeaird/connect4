@@ -1,5 +1,7 @@
-import java.util.Arrays;
 
+
+import java.util.Arrays;
+@Deprecated
 public class WrapAroundConnect4Board extends Connect4Board {
 
 	@SuppressWarnings("unused")

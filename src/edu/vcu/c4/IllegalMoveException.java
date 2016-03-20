@@ -1,9 +1,5 @@
-/**
- * 
- * Use the corresponding class in package edu.vcu.c4 instead
- * 
- */
-@Deprecated
+package edu.vcu.c4;
+
 public class IllegalMoveException extends RuntimeException {
 
 	public IllegalMoveException(String arg0) {

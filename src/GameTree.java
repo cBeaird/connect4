@@ -1,7 +1,13 @@
+
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * 
+ * Use the corresponding class in package edu.vcu.c4 instead
+ * 
+ */
+@Deprecated
 public class GameTree {
 
     GameTree parent;

@@ -6,7 +6,12 @@ import java.util.List;
 import api.C4Game;
 import api.C4Move;
 import api.C4Strategy;
-
+/**
+ * 
+ * Use the corresponding class in package edu.vcu.c4 instead
+ * 
+ */
+@Deprecated
 public class RandomMoveStrategy implements C4Strategy{
 
 	@Override

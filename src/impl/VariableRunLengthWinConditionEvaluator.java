@@ -6,7 +6,12 @@ import api.C4Board;
 import api.C4Game;
 import api.Color;
 import api.WinConditionEvaluator;
-
+/**
+ * 
+ * Use the corresponding class in package edu.vcu.c4 instead
+ * 
+ */
+@Deprecated
 public class VariableRunLengthWinConditionEvaluator implements WinConditionEvaluator {
 
 	private int runLen;

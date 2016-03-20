@@ -1,7 +1,9 @@
+
+
 import java.util.Scanner;
 
 
-
+@Deprecated
 public class NaiveConnect4Game {
 
 	private static Connect4Board board = new Connect4Board("" +

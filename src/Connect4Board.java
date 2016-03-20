@@ -4,6 +4,12 @@ import static java.util.Arrays.copyOf;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 
+ * 
+ *
+ */
+@Deprecated
 public class Connect4Board {
 	private static final int RUN_LENGTH = 4;
 	private static final char PLAYER1 = 'X';

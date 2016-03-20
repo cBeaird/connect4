@@ -1,7 +1,12 @@
 package api;
 
 import java.util.List;
-
+/**
+ * 
+ * Use the corresponding class in package edu.vcu.c4 instead
+ * 
+ */
+@Deprecated
 public interface C4Board {
 	public int getBoardWidth();
 	public int getBoardHeight();

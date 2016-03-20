@@ -6,7 +6,12 @@ import static api.Color.NONE;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
-
+/**
+ * 
+ * Use the corresponding class in package edu.vcu.c4 instead
+ * 
+ */
+@Deprecated
 public class C4Game {
 
 	private C4Strategy whiteStrategy;

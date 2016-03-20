@@ -13,7 +13,12 @@ import api.C4Board;
 import api.C4Move;
 import api.Color;
 import api.IllegalMoveException;
-
+/**
+ * 
+ * Use the corresponding class in package edu.vcu.c4 instead
+ * 
+ */
+@Deprecated
 public class ArrayBackedBoard implements C4Board {
 
 	private int w;
